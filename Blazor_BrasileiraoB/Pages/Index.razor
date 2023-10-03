@@ -1,0 +1,53 @@
+﻿@page "/"
+@page "/Tabela"
+@inject ITabelaService tabelaService
+
+
+<PageTitle>Tabela</PageTitle>
+
+@if (Tabela == null)
+{
+    <h3> Carregando Times</h3>
+}
+else
+{
+    <h3>Times</h3>
+    @if (Tabela.Count()>0)
+    {
+        <table class="styled-table">
+          <thead>
+            <th>Position</th>
+            <th>Badge</th>
+            <th>Team</th>
+            <th>Mathes</th>
+            <th>Points</th>
+
+          </thead>
+          <tbody>
+                @foreach (var team in Tabela)
+                {
+                    <tr> 
+                      <td>@team.Posicao</td>
+                      <td><img class="badge" src="@team.Time.escudo" alt=""></td>
+                      <td>@team.Time.nome_popular</td>
+                      <td>@team.Jogos</td>
+                      <td>@team.Pontos</td>
+           
+                    </tr>
+                }
+          </tbody>
+        </table>
+    }
+
+}
+
+
+
+@code {
+    public IEnumerable<Tabela>? Tabela { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        Tabela = await tabelaService.GetItens();
+    }
+}
